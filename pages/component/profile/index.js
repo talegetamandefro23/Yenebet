@@ -1,11 +1,29 @@
 import getConfig from 'next/config';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../footer';
 import Header from '../header';
 import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
+import { Dialog } from 'primereact/dialog';
 import { Column } from 'primereact/column';
+import { Dropdawn, Dropdown } from 'primereact/dropdown';
+import { InputText } from 'primereact/inputtext';
 const index = (props) => {
+    let empityResult = {
+        BankType: '',
+        AccountNumber: '',
+        AccountOwner: '',
+        Amount: ''
+    };
+    const [result, setResult] = useState(empityResult);
+    const [withdraw, setWithdrawDialog] = useState(false);
+    const [filteredBankType, setFilteredBankType] = useState(null);
+    let bankTypes = [
+        { name: 'Commertial Bank', value: '1' },
+        { name: 'Bank of Abyssinia', value: '2' },
+        { name: 'Awash Bank ', value: '3' },
+        { name: 'Dashen Bank', value: '4' }
+    ];
     useEffect(() => {}, []);
     const rowCount = (rowData, props) => {
         let index = parseInt(props.rowIndex + 1, 10);
@@ -20,6 +38,32 @@ const index = (props) => {
         { name: 'Dani', package: '10000', bonus: '3500' },
         { name: 'Birhan', package: '8000', bonus: '2800' }
     ];
+    const withdrawTrsDialog = () => {
+        setWithdrawDialog(true);
+    };
+    const hidewithdrawTrsDialog = () => {
+        setWithdrawDialog(false);
+    };
+    const inputChange = (e, name) => {
+        const val = (e.target && e.target.value) || '';
+        let _result = { ...result };
+        _result[`${name}`] = val;
+        setResult(_result);
+    };
+    const OndropdawnChange = (e, name) => {
+        debugger;
+        const val = (e.target && e.target.value) || '';
+        let _result = { ...result };
+        _result[`${name}`] = val;
+        setFilteredBankType(val);
+        setResult(_result);
+    };
+    const withdrawDialogFooter = (
+        <>
+            <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hidewithdrawTrsDialog} />
+            <Button label="Withdraw" icon="pi pi-check" className="login-btn" raised onClick={''} />
+        </>
+    );
     return (
         <React.Fragment>
             <div className="col-12">
@@ -84,7 +128,7 @@ const index = (props) => {
                             <div className="card h-full flex flex-column align-items-center justify-content-center">
                                 <span className="text-900 text-lg mb-4 font-medium">The minimum threshold to withdraw money is 300 ETB</span>
                                 <div className="py-3">
-                                    <Button icon="pi pi-external-link" label="Withdraw" />
+                                    <Button icon="pi pi-external-link" label="Withdraw" onClick={withdrawTrsDialog} />
                                 </div>
                             </div>
                         </div>
@@ -146,7 +190,27 @@ const index = (props) => {
                                 </DataTable>{' '}
                             </div>
                         </div>
-
+                        <Dialog visible={withdraw} style={{ width: '25vw', height: '65vh' }} header={'Withdraw '} modal className="p-fluid" footer={withdrawDialogFooter} onHide={hidewithdrawTrsDialog}>
+                            <div className="p-fluid card mt-2 ">
+                                <div className="field">
+                                    <br />
+                                    <label htmlFor="BankType">Account Type*</label>
+                                    <Dropdown id="BankType" value={filteredBankType || ''} onChange={(e) => OndropdawnChange(e, 'BankType')} options={bankTypes} optionLabel="name" required placeholder="Select Bank Type" />
+                                </div>
+                                <div className="field">
+                                    <label htmlFor="AccountNumber">Account Number *</label>
+                                    <InputText id="AccountNumber" type="number" value={result.AccountNumber} onChange={(e) => inputChange(e, 'AccountNumber')} required />
+                                </div>
+                                <div className="field">
+                                    <label htmlFor="AccountOwner">Account Owner *</label>
+                                    <InputText id="AccountOwner" value={result.AccountOwner} onChange={(e) => inputChange(e, 'AccountOwner')} required />
+                                </div>
+                                <div className="field">
+                                    <label htmlFor="Amount">Amount *</label>
+                                    <InputText id="Amount" type="number" value={result.Amount} onChange={(e) => inputChange(e, 'Amount')} required />
+                                </div>
+                            </div>
+                        </Dialog>
                         <div className="col-12 lg:col-6">
                             <div className="card h-full">
                                 <div className="flex align-items-center justify-content-between mb-3">
