@@ -6,7 +6,7 @@ import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Dialog } from 'primereact/dialog';
 import { Column } from 'primereact/column';
-import { Dropdawn, Dropdown } from 'primereact/dropdown';
+import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 const index = (props) => {
     let empityResult = {
