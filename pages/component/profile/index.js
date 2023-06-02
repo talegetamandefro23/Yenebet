@@ -189,7 +189,7 @@ const index = (props) => {
                                     <InputText id="AccountNumber" type="number" value={result.AccountNumber} onChange={(e) => inputChange(e, 'AccountNumber')} required />
                                 </div>
                                 <div className="field">
-                                    <label htmlFor="AccountOwner">Account Owner *</label>
+                                    <label htmlFor="AccountOwner">Account Holder Name *</label>
                                     <InputText id="AccountOwner" value={result.AccountOwner} onChange={(e) => inputChange(e, 'AccountOwner')} required />
                                 </div>
                                 <div className="field">
